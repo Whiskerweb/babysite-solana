@@ -67,22 +67,19 @@ export const CLAIM_CATEGORY = 'run-to-earn';
  *  three are the ones the gate names. */
 export const WALLETS = ['Phantom', 'Solflare', 'Backpack'];
 
-/** The sign-up skin. Naming follows the game's own catalogue — BabyTrump,
- *  BabyMusk, BabyNetan — so a player who reads the name here recognises the
- *  entry in the wardrobe.
- *
- *  IL EXISTE, depuis le 5 septembre 2026 — il n'existait pas quand cette section
- *  a ete ecrite, et c'etait signale ici comme une promesse sans rien derriere.
- *  Dans le jeu il porte l'id `char-tinytrader` (`cosmetics.js:MODELS`, GLB rigge
- *  dans `tools/feel-lab/public/models/`), et il ne s'achete ni ne se gagne : une
- *  BOITE CADEAU plein ecran attend un clic a la premiere arrivee au lobby, et
- *  l'ouvrir donne le skin et l'equipe (`boutique.js`, `cadeau.js`). D'ou « open
- *  your gift » plutot que « on te le donne » dans la copie ci-dessous : le joueur
- *  a un geste a faire, et c'est le premier du jeu. */
+/** The sign-up skin — PEPE, on the Solana twin (product director, 9 September
+ *  2026: « supprime le skin de Vlad et mets en skin free a l'inscription le skin
+ *  Pepe »). BabyVlad, the Robinhood CEO, stays on the Robinhood game and has no
+ *  place here. In the game Pepe is `char-grenouille` (`cosmetics.js:MODELS`): the
+ *  default character, free, and the one the full-screen GIFT BOX opens on at the
+ *  first arrival in the lobby (`cadeau.js`, `boutique.js`) — hence « open your
+ *  gift » in the copy: the player has one gesture to make, and it is the first of
+ *  the game. The portrait is a clean render made for this page (gpt image via
+ *  OpenRouter, 9 September 2026), the same file the game's roster shows. */
 export const SKIN = {
-  name: 'BabyVlad',
-  who: 'Vlad, the Robinhood CEO',
-  image: '/img/babyvlad.webp',
+  name: 'Pepe',
+  who: 'Baby Pepe, the frog',
+  image: '/img/pepe.webp',
 };
 
 /** The two money thresholds, in USDC. Product decisions of 7 September 2026,
