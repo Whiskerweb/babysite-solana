@@ -4,7 +4,7 @@ import Usdc from './Usdc.astro';
 import T from './T.astro';
 import {
   DEPOSIT_MIN, WITHDRAW_MIN, TABLES, GAME_URL, PLAY_LABEL, NETWORK, CHAIN,
-  FAUCET_USDC, FAUCET_EVERY_MINUTES, WALLETS, SKIN,
+  WALLETS, SKIN,
 } from '../data/site';
 
 // The closing section. It was the whitelist form — an email in exchange for a
@@ -21,7 +21,7 @@ const ledger = [
     k: 'You deposit from',
     v: `${DEPOSIT_MIN}`,
     unit: true,
-    x: `From ${WALLETS.join(', ')}, in {USDC} — or, on mainnet, in SOL swapped to {USDC} on the spot. On devnet, test {USDC} is free from the lobby's faucet.`,
+    x: `In {USDC}, from ${WALLETS.join(', ')}: straight from your wallet in the lobby, or sent to your own game address.`,
   },
   {
     k: 'You stake',
@@ -72,11 +72,9 @@ const ledger = [
         <img class="play__mark" src="/icons/solana.svg" alt=""
              width="398" height="312" loading="lazy" decoding="async" />
         <span>
-          <strong>{CHAIN} · {NETWORK}</strong> — the <Usdc /> in play is a TEST dollar,
-          and the game mints it for you: {FAUCET_USDC} at a time, once every
-          {FAUCET_EVERY_MINUTES} minutes. It is worth nothing, and so is anything you
-          win. Every mechanic — the deposit, the stake, the pot, the payout, the
-          buyback — runs exactly as it will with real money, on a chain you can read.
+          <strong>{CHAIN} · {NETWORK}</strong> — real <Usdc />, real money. To play you
+          need an account, {DEPOSIT_MIN} <Usdc /> or more in your game wallet, and a
+          browser. Every match is a transaction you can open in the Solana explorer.
         </span>
       </p>
     </div>
@@ -200,9 +198,9 @@ const ledger = [
     max-width: 46ch;
   }
 
-  /* The devnet notice. Same pill as the old scarcity line, and it says the one
-     thing a visitor about to stake needs to know before clicking: this is a test
-     dollar, worth nothing. */
+  /* The mainnet notice. Same pill as the devnet notice before it (and the old
+     scarcity line before that), and it says the one thing a visitor about to
+     stake needs to know before clicking: this is real money. */
   .play__note{
     margin-top: clamp(22px, 3vw, 30px);
     display: flex;

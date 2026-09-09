@@ -26,34 +26,43 @@ export const TRACKER_URL = `${GAME_URL}/api/suivi`;
  *  drift apart. */
 export const PLAY_LABEL = 'Play now';
 
-/** THE CHAIN the deployed game settles on — Solana. Read off the live game's
- *  own `/api/stats`, which reports `Solana devnet`, the cluster, the explorer
- *  and the two mints (the test USDC the game mints, and BG). If those lines
- *  ever disagree with this file, the live game is right and this file is stale. */
+/** THE CHAIN the deployed game settles on — Solana, MAINNET since 9 September
+ *  2026 (devnet for the first day). Read off the live game's own `/api/stats`,
+ *  which reports `Solana mainnet`, the cluster `mainnet-beta`, the explorer and
+ *  the USDC mint: Circle's, `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`. If
+ *  those lines ever disagree with this file, the live game is right and this
+ *  file is stale. */
 export const CHAIN = 'Solana';
-export const CLUSTER = 'devnet';
+export const CLUSTER = 'mainnet';
+export const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 export const CHAIN_EXPLORER = 'https://explorer.solana.com';
 /** Every explorer link on this page carries the cluster: without it, the
  *  explorer looks the address up on mainnet and finds nothing. Empty once the
  *  game moves to mainnet. */
 export const EXPLORER_QUERY = CLUSTER === 'mainnet' ? '' : `?cluster=${CLUSTER}`;
 
-/** `devnet` = test USDC, no real money. The page says so plainly rather than
- *  letting a visitor assume otherwise: sending someone to a money game under a
- *  wrong impression is the one thing we do not do — in either direction. Moves
- *  in step with `SOLANA_RESEAU` on the deployed backend (the game's `/api/stats`
- *  prints it as `reseau`); the day it says `mainnet`, this file, the FAQ and the
- *  footer change together. */
+/** `mainnet` = real USDC, real money, since 9 September 2026. The page says so
+ *  plainly, the same way it said "test dollar, worth nothing" the day before:
+ *  sending someone to a money game under a wrong impression is the one thing we
+ *  do not do — in either direction. Moves in step with `SOLANA_RESEAU` on the
+ *  deployed backend (the game's `/api/stats` prints it as `reseau`). */
 export const NETWORK = CLUSTER;
 
-/** The test USDC the game MINTS on request — devnet only, and the reason a
- *  visitor can play the minute they land. Not a public faucet: nobody sells
- *  test USDC, so the game mints its own (`POST /robinet`, `backend/src/config.js`,
- *  the lobby's "GET 20 TEST USDC" button). Defaults are live — no ROBINET_MICROS
- *  override is set on the deployed backend. On mainnet this cannot exist:
- *  Circle's USDC has no mint function the game could call. */
-export const FAUCET_USDC = 20;
-export const FAUCET_EVERY_MINUTES = 60;
+/** The day real money went live, written once: the FAQ and the footer both
+ *  date the switch, and two dates would be one too many. */
+export const MAINNET_SINCE = '9 September 2026';
+
+/** WHAT IS NOT ON THE PAGE, and why (9 September 2026, the day of the switch):
+ *   - no faucet: Circle's USDC has no mint function the game could call, so the
+ *     lobby's "GET 20 TEST USDC" button is gone with devnet;
+ *   - no SOL: the SOL → USDC swap in the deposit guide is switched off on the
+ *     deployed backend (`SWAP=0`) until it has been exercised with real money.
+ *     The page says "in USDC" and nothing else; the day it is on, the deposit
+ *     line and the FAQ gain the SOL sentence back;
+ *   - no live burn yet: the game's BG token has no mint on Solana mainnet
+ *     (`BG_MINT` empty, `BRULAGE=0`), so the commission ACCUMULATES in USDC on
+ *     the fees wallet, on-chain, until the token has a market. The page says
+ *     "set aside for the buyback", not "burned today". */
 
 /** How we say what this is. The product director's claim, 5 September 2026.
  *  Stated once here so the badge, the page title and the meta description
@@ -86,13 +95,14 @@ export const SKIN = {
  *  carried by the deployed backend's `.env` (`DEPOT_MINIMUM_MICROS`,
  *  `RETRAIT_MINIMUM_MICROS`): the lobby refuses a deposit under the first and a
  *  withdrawal under the second. There is no waiting period before a first
- *  withdrawal (`DELAI_PREMIER_RETRAIT_HEURES=0`, same decision). On devnet the
- *  amounts are test USDC, so the thresholds are shape, not money. */
+ *  withdrawal (`DELAI_PREMIER_RETRAIT_HEURES=0`, same decision). Real USDC
+ *  since 9 September 2026: the thresholds are money. */
 export const DEPOSIT_MIN = 5;
 export const WITHDRAW_MIN = 25;
 
-/** Share of every match bought back and burned.
- *  The commission IS the burn: 100 % of it buys token back, nothing is kept. */
+/** Share of every match set aside for the buyback and burn.
+ *  The commission IS the burn: 100 % of it buys token back, nothing is kept. Until
+ *  the token has a market on Solana, it accumulates in USDC on the fees wallet. */
 export const BURN_PCT = '10';
 
 /** Burn counter and buyback wallet: empty at launch. */
@@ -175,7 +185,7 @@ export const steps = [
   {
     n: '01',
     title: 'You bet',
-    text: 'Pick a 2, 5 or 10 {USDC} table — test USDC on devnet, minted for you in the lobby. Your stake is charged when the match starts, not when it ends.',
+    text: 'Pick a 2, 5 or 10 {USDC} table. Your stake is charged when the match starts, not when it ends.',
   },
   {
     n: '02',
@@ -208,19 +218,19 @@ export const faq = [
   },
   {
     q: 'Where does the commission go?',
-    a: `${COMMISSION_PCT}% of everything staked — and all of it goes the same way: it buys token back on the market, and every token bought back is burned. Nothing is kept. You do not have to take that on trust: the game publishes every buyback, every burn and every transaction as it happens, on its on-chain page, along with the treasury addresses.`,
+    a: `${COMMISSION_PCT}% of everything staked — and all of it goes the same way: it is set aside, in {USDC}, on a fees wallet you can read on ${CHAIN}, to buy token back and burn it. Nothing is kept. The token does not have a market on ${CHAIN} yet, so for now the commission accumulates there; the buybacks and burns start the day it does, and every one of them will be on the game's on-chain page, along with the treasury addresses. You do not have to take that on trust.`,
   },
   {
     q: 'Can I play right now?',
     a: `Yes. Hit any gold button on this page, then either make an account with an email or sign in with your wallet — ${WALLETS.join(', ')} — and you are in a queue. Duels start at two players, squads at four, the arena at sixteen.`,
   },
   {
-    q: 'Is this real money yet?',
-    a: `Not yet. The game settles on ${CHAIN} ${NETWORK}: the {USDC} you stake is a TEST dollar, and the game mints it for you — ${FAUCET_USDC} at a time, once every ${FAUCET_EVERY_MINUTES} minutes, from the lobby's own faucet button. It is worth nothing, and so is anything you win. Every mechanic — the deposit from ${WALLETS.join(', ')}, the stake, the pot, the payout, the buyback and the burn — runs exactly as it will with real USDC, on a chain you can read in the Solana explorer. On mainnet you will also be able to deposit in SOL, swapped to {USDC} on the spot. The switch happens once the legal review is done, and it will be announced here.`,
+    q: 'Is it real money?',
+    a: `Yes, since ${MAINNET_SINCE}. The game settles on ${CHAIN} ${NETWORK} in {USDC}, the dollar issued by Circle. You deposit {USDC} from ${WALLETS.join(', ')} — straight from the wallet, or by sending it to your own game address — from ${DEPOSIT_MIN} {USDC}; you withdraw from ${WITHDRAW_MIN} {USDC}, to a wallet you have linked, with no waiting period. Every stake, pot and payout is a transaction you can open in the Solana explorer. A match can cost you your entire stake.`,
   },
   {
     q: 'Which countries?',
-    a: 'Real money is on the line the day we leave devnet: jurisdictions where this kind of game is restricted are excluded, and the list will be published before real deposits open. 18+, no exceptions.',
+    a: 'Real money is on the line, so paid matches are off limits wherever this kind of game is regulated or prohibited. Check the rules where you live before you deposit: an account does not grant access to paid matches. 18+, no exceptions.',
   },
 ];
 
@@ -232,10 +242,10 @@ export const faq = [
  *  the home page keeps its single gold action (play), and the buy button is a
  *  ghost next to it, never a second gold.
  *
- *  `null` ON THE SOLANA TWIN: the BG token of this game is a Solana mint
- *  (Token-2022, minted to the game's own pool on devnet), and there is no
- *  market for it yet — the PONS launchpad link of the Robinhood site sells a
- *  token on another chain, and sending a Solana player there would be wrong.
+ *  `null` ON THE SOLANA TWIN: the game's BG token has no mint on Solana
+ *  mainnet yet, and no market — the PONS launchpad link of the Robinhood site
+ *  sells a token on another chain, and sending a Solana player there would be
+ *  wrong.
  *  With `null`, the /wheel page hides the buy button instead of linking
  *  nowhere. Fill it in the day a Solana market opens. */
 export const BABY_BUY_URL: string | null = null;
@@ -257,7 +267,7 @@ export const wheelLink = { label: 'The wheel', href: '/wheel' };
  *  `big` is what the 0 row shows in large type: the honest "70%" a reader
  *  takes away, with the exact figure printed small beside it. */
 export const wheel = {
-  minDeposit: 5,                 // USDC (test, on devnet) a player must have deposited before the spin counts
+  minDeposit: 5,                 // USDC a player must have deposited before the spin counts
   average: '1.38',               // USDC, the expectation of one spin (sum of usdc x pct / 100)
   slices: [
     { usdc: 0,    pct: 69.9999, label: '69.9999%', big: '70%' },

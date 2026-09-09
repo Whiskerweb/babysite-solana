@@ -56,9 +56,8 @@ standing in until the final key art arrives.
 | `GAME_URL` | `https://play.babyguy.xyz` | **Where every gold button goes.** Six links on the built page read it; there is no second place to change. |
 | `TRACKER_URL` | *derived* | The game's live on-chain page, `GAME_URL + /api/suivi` — never written out, so it cannot drift from `GAME_URL`. The `/api/` is not decorative: the backend that serves it is private on Fly and the game server relays `/api/…` to it, which is why `play.babyguy.xyz/suivi` is a 404. Linked from the Token section and the footer. |
 | `PLAY_LABEL` | `'Play now'` | The words on those six buttons. |
-| `CHAIN` / `CLUSTER` / `CHAIN_EXPLORER` / `EXPLORER_QUERY` | Solana, devnet, explorer.solana.com, `?cluster=devnet` | The chain the twin settles on. Read off the live game's `/api/stats` (`reseauDetail`). Every explorer link carries `EXPLORER_QUERY`: without the cluster, the explorer looks the address up on mainnet and finds nothing. |
-| `NETWORK` | `'devnet'` (= `CLUSTER`) | Printed in the notice on the play section, the FAQ and the footer. The page states plainly that the USDC in play is a TEST dollar, minted by the game, worth nothing. **Moves with `SOLANA_RESEAU` on the deployed backend** (`/api/stats` prints it as `reseau`): the day it says `mainnet`, this file, the FAQ ("Is this real money yet?"), the play notice and the footer change together — the `babysite` repo's commit `3c9c9cc` is the model for that switch. |
-| `FAUCET_USDC` / `FAUCET_EVERY_MINUTES` | 20 / 60 | The test USDC the game mints on request (`POST /robinet`), devnet only. |
+| `CHAIN` / `CLUSTER` / `CHAIN_EXPLORER` / `EXPLORER_QUERY` / `USDC_MINT` | Solana, mainnet, explorer.solana.com, empty, Circle's USDC mint | The chain the twin settles on. Read off the live game's `/api/stats` (`reseauDetail`). Every explorer link carries `EXPLORER_QUERY`: without the cluster, the explorer looks the address up on mainnet and finds nothing. |
+| `NETWORK` / `MAINNET_SINCE` | `'mainnet'` (= `CLUSTER`) / `'9 September 2026'` | Printed in the notice on the play section, the FAQ and the footer: real USDC, real money, dated. **Moves with `SOLANA_RESEAU` on the deployed backend** (`/api/stats` prints it as `reseau`). Devnet lasted one day (9 September 2026); the commit before this one is the devnet wording, should a test network ever come back. |
 | `CLAIM_CATEGORY` | `'run-to-earn'` | How we name what this is. Stated once so the hero badge, the `<title>` and the meta description cannot word it three different ways. |
 | `DEPOSIT_MIN` / `WITHDRAW_MIN` | 5 / 25 | The two money thresholds, in USDC, from the deployed backend's `DEPOT_MINIMUM_MICROS` and `RETRAIT_MINIMUM_MICROS` (product decisions of 7 September 2026). No waiting period before a first withdrawal. The test-dollar mint of the testnet days (`FAUCET_USDC`, `FAUCET_EVERY_MINUTES`) is gone with the testnet: real USDC has no mint function. |
 | `WALLETS` | Phantom, Solflare, Backpack | Read off the live sign-in gate ("SIGN IN WITH SOLANA"), not guessed — naming a wallet the gate does not offer sends someone to install one for nothing. |
@@ -126,11 +125,15 @@ there is no server-side anything on this page.
 ## The dollar is USDC
 
 The page is written **USDC** everywhere: the `<Usdc />` mark, the `{USDC}` placeholder
-that `T.astro` swaps for it, and the prose. On devnet that is the game's OWN test USDC
-(a mint the game's treasury can mint, so the lobby can hand out 20 at a time); on mainnet
-it will be Circle's USDC. The name does not change between the two, which is why the
-page says "test USDC" and not a different word: there is no such thing as a different
-dollar, only a network where it is worth nothing.
+that `T.astro` swaps for it, and the prose. Since 9 September 2026 that is Circle's USDC
+on Solana mainnet (`USDC_MINT`), real money; on devnet, the day before, it was the game's
+own test mint under the same name. Three things the page deliberately does NOT say, and
+why: no faucet (Circle's USDC cannot be minted by the game), no SOL (the SOL → USDC swap
+of the deposit guide is switched off on the deployed backend until it has been exercised
+with real money), no live burn (the BG token has no mint on Solana mainnet yet: the
+commission accumulates in USDC on the fees wallet, and the page says "set aside", not
+"burned"). Each comes back the day the backend turns it on — see the comment block above
+`MAINNET_SINCE` in `site.ts`.
 
 ## The hero image
 

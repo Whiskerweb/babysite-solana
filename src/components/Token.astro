@@ -38,7 +38,9 @@ const chain = [
     <h2 class="h2">Every match takes tokens <br class="h2__brk" /> out of circulation.</h2>
     <p class="lede token__lede">
       The commission is the burn. It is not a fee that goes somewhere else —
-      all of it buys token back, and every token bought back is destroyed.
+      all of it is set aside, on-chain, to buy token back, and every token bought
+      back is destroyed. Until the token trades on {CHAIN}, it accumulates in
+      <Usdc /> on the fees wallet, where anyone can count it.
     </p>
 
     <!-- The pot, to scale. -->
@@ -103,9 +105,9 @@ const chain = [
         <p class="proof__t">Don't take our word for it.</p>
         <p class="proof__x">
           The game publishes everything it does on {CHAIN}, live and to everyone:
-          matches played, <Usdc /> staked, every
-          buyback, every burn, every transaction, and the treasury addresses with
-          their explorer links.
+          matches played, <Usdc /> staked, every transaction, the commission set
+          aside for the buyback — and, once the token trades, every buyback and
+          every burn — with the treasury addresses and their explorer links.
         </p>
       </div>
 

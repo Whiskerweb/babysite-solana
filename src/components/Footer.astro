@@ -2,7 +2,7 @@
 import Social from './Social.astro';
 import ChainBadge from './ChainBadge.astro';
 import Divider from './Divider.astro';
-import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL, CHAIN, NETWORK } from '../data/site';
+import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL, CHAIN, NETWORK, MAINNET_SINCE } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ft">
@@ -34,13 +34,13 @@ const year = new Date().getFullYear();
       <p class="ft__warn">
         <strong>18+ only.</strong> Baby Guy is played for stakes: a match can cost you
         your entire stake. Only ever stake what you can afford to lose. The game
-        currently settles on {CHAIN} {NETWORK} — test USDC, no real money.
+        settles on {CHAIN} {NETWORK} in USDC: real money, since {MAINNET_SINCE}.
       </p>
       <p class="ft__warn">
         <strong>Jurisdiction restrictions.</strong> Paid matches are off limits wherever
-        this kind of game is regulated or prohibited. The list of excluded countries is
-        published before real-money deposits open, and an account does not guarantee
-        access to paid matches.
+        this kind of game is regulated or prohibited. It is on you to check the rules
+        where you live before you deposit, and an account does not grant access to
+        paid matches.
       </p>
       <p class="ft__copy">© {year} Baby Guy — No promise of profit. The numbers on this page describe a split rule, not a return.</p>
     </div>
