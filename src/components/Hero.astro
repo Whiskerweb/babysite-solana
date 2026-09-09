@@ -1,0 +1,151 @@
+---
+import Usdc from './Usdc.astro';
+import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
+---
+<section class="hero" id="top">
+  <div class="hero__scrim"></div>
+
+  <div class="hero__content">
+    <!-- The claim goes ABOVE the headline and not inside it: "Bet. Run. Cash
+         out." is what the game does to you, the badge is what the game IS.
+         Merging them would cost the three-verb line, which is the strongest
+         thing on the page. -->
+    <p class="hero__claim">
+      <!-- Le logomark Solana a la place d'un point : le point ne voulait rien
+           dire, la marque dit de quelle chaine on parle avant meme qu'on lise. -->
+      <img class="hero__claim-mark" src="/icons/solana.svg" alt=""
+           width="398" height="312" loading="eager" decoding="async" />
+      <!-- Le libelle tient dans UN span. Laisses nus, les bouts de texte
+           deviennent des elements flex separes : sur un telephone ils se
+           rangeaient en colonnes et coupaient « run-to- / earn » en deux. -->
+      <span class="hero__claim-txt">The first <strong>{CLAIM_CATEGORY}</strong> game on {CHAIN}</span>
+    </p>
+
+    <h1 class="hero__title">Bet. Run. Cash out.</h1>
+
+    <p class="hero__sub">
+      Battle royale for <Usdc /> stakes, on-chain results.
+      1v1, squads of four, arenas of sixteen — playable right now, in the browser.
+    </p>
+
+    <a class="btn btn--gold btn--lg" href={GAME_URL}>{PLAY_LABEL}</a>
+
+    <a class="link-quiet hero__trailer" href="#trailer">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+      Watch the trailer · 30s
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero{
+    position: relative;
+    min-height: min(96vh, 940px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: url('/img/hero-bg.webp') center 36% / cover no-repeat, var(--violet-900);
+    padding: clamp(90px, 16vh, 170px) 20px clamp(60px, 8vh, 96px);
+    overflow: hidden;
+  }
+  /* L'ancien voile etait un lavis violet sur les 58 % du bas, regle pour une
+     image SOMBRE. La nouvelle est claire — ciel bleu, estrade jaune — et ce
+     lavis la noyait a moitie. Ici : une flaque ELLIPTIQUE derriere la colonne
+     de texte, qui laisse les bords lumineux (Vlad a gauche, Trump a droite),
+     un socle court en bas pour rejoindre la section suivante, et un voile
+     leger en haut sous l'en-tete. */
+  .hero__scrim{
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(112% 64% at 50% 110%,
+        rgba(30,18,72,.94) 0%,
+        rgba(30,18,72,.82) 28%,
+        rgba(30,18,72,.5) 48%,
+        rgba(30,18,72,.16) 66%,
+        rgba(30,18,72,0) 80%),
+      linear-gradient(0deg,
+        var(--violet-900) 0%,
+        rgba(52,38,111,.8) 7%,
+        rgba(52,38,111,.3) 16%,
+        rgba(52,38,111,0) 28%),
+      linear-gradient(180deg, rgba(38,26,88,.34) 0%, rgba(38,26,88,0) 13%);
+  }
+  .hero__content{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(14px, 2.2vh, 24px);
+  }
+  /* The badge. Gold hairline on a dark wash, because it sits on a photograph
+     and a translucent pill alone would read differently over every part of it.
+     Not a button: nothing here is clickable, gold stays the action colour. */
+  .hero__claim{
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 18px;
+    border: 1px solid rgba(255,201,60,.55);
+    border-radius: 999px;
+    background: rgba(26,14,58,.55);
+    backdrop-filter: blur(6px);
+    font-size: clamp(11.5px, 1.2vw, 14px);
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.92);
+    text-shadow: 0 1px 6px rgba(0,0,0,.5);
+  }
+  .hero__claim-txt{ text-wrap: balance; }
+  /* Le nom de la categorie ne se coupe jamais sur son trait d'union. */
+  .hero__claim strong{ color: var(--gold); font-weight: 900; white-space: nowrap; }
+  .hero__claim-mark{
+    flex: none;
+    width: auto;
+    height: 1.25em;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,.55));
+  }
+
+  .hero__title{
+    font-size: clamp(27px, 4.9vw, 62px);
+    text-transform: uppercase;
+    letter-spacing: -1.2px;
+    white-space: nowrap;
+    text-shadow: 0 6px 26px rgba(0,0,0,.72), 0 2px 5px rgba(0,0,0,.62);
+  }
+  .hero__sub{
+    max-width: 46ch;
+    font-size: clamp(15px, 1.7vw, 19px);
+    font-weight: 600;
+    line-height: 1.5;
+    color: rgba(255,255,255,.88);
+    text-shadow: 0 2px 14px rgba(0,0,0,.8), 0 1px 3px rgba(0,0,0,.6);
+  }
+  .hero__trailer{ text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+
+  /* Une illustration 16/9 derriere un hero de telephone, en `cover`, ne montre
+     que les 26 % du milieu : le logo coupe des deux cotes et plus un seul
+     personnage. Sous 720 px elle cesse donc de remplir et devient une BANDE en
+     haut, a sa largeur entiere, le texte passant dessous sur le violet.
+     56.31vw = 941 / 1671, la hauteur de l'image a pleine largeur. */
+  @media (max-width: 720px){
+    .hero{
+      min-height: 0;
+      align-items: stretch;
+      background: url('/img/hero-bg.webp') center top / 100% auto no-repeat, var(--violet-900);
+      padding: calc(56.31vw + clamp(16px, 4vw, 30px)) 20px clamp(42px, 6vh, 62px);
+    }
+    .hero__scrim{
+      background: linear-gradient(180deg,
+        rgba(52,38,111,0) calc(56.31vw - 74px),
+        rgba(52,38,111,.72) calc(56.31vw - 26px),
+        var(--violet-900) calc(56.31vw + 2px));
+    }
+    .hero__content{ justify-content: flex-start; }
+  }
+
+  @media (max-width: 560px){
+    .hero__claim{ padding: 8px 14px; gap: 7px; letter-spacing: .2px; line-height: 1.45; }
+  }
+</style>

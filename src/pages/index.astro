@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CHAIN, CLAIM_CATEGORY, TABLES } from '../data/site';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Trailer from '../components/Trailer.astro';
+import HowToPlay from '../components/HowToPlay.astro';
+import PlayBar from '../components/PlayBar.astro';
+import Token from '../components/Token.astro';
+import Play from '../components/Play.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout
+  title={`Baby Guy — the first ${CLAIM_CATEGORY} game on ${CHAIN}`}
+  description={`Obstacle-course battle royale for USDC stakes, settled on ${CHAIN} (devnet for now: test USDC, minted for you). Three formats playable now in the browser — 1v1, squads of four, 16-player arenas — on ${TABLES.join(", ")} USDC tables.`}
+>
+  <Header />
+  <main>
+    <Hero />          {/* 1 */}
+    <Trailer />       {/* 2 */}
+    <HowToPlay />     {/* 3 */}
+      <PlayBar />       {/* 4 */}
+    <Token />         {/* 5 */}
+    <Play />          {/* 6 */}
+    <Faq />
+  </main>
+  <Footer />
+</Layout>
